@@ -5,8 +5,8 @@ using UnityEngine;
 public class ObjectSpawner : MonoBehaviour
 {
     // public List<Transform> spawnPoints;
-    public static GameObject[] BranchesPrefabs;
-    public int spawnCount = 10;
+    public static GameObject[] StonesPrefabs;
+    public int spawnCount = 100;
     public Vector3 center;
     public Vector3 size;
 
@@ -14,8 +14,8 @@ public class ObjectSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        BranchesPrefabs = Resources.LoadAll<GameObject>("Prefabs");
-        spawnBranches();
+        StonesPrefabs = Resources.LoadAll<GameObject>("Prefabs");
+        spawnStones();
     }
 
     // Update is called once per frame
@@ -24,12 +24,16 @@ public class ObjectSpawner : MonoBehaviour
         
     }
 
-    void spawnBranches()
+    void spawnStones()
     {
         for (int i = 0; i < spawnCount; i++)
         {
             Vector3 pos = center + new Vector3(Random.Range(-size.x / 2, size.x / 2), Random.Range(-size.y / 2, size.y / 2), Random.Range(-size.z / 2, size.z / 2));
-            GameObject branch = SpawnBranch(pos);
+            GameObject stone = spawnStone(pos);
+            stone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
+            BoxCollider stone_colider = stone.AddComponent<BoxCollider>();
+            Rigidbody stone_rigidbody = stone.AddComponent<Rigidbody>();
+            stone_rigidbody.mass = 5;
         }
     }
 
@@ -41,9 +45,9 @@ public class ObjectSpawner : MonoBehaviour
 
 
 
-    private GameObject SpawnBranch(Vector3 spawnPoint)
+    private GameObject spawnStone(Vector3 spawnPoint)
     {
-        var prefab = BranchesPrefabs[Random.Range(0, BranchesPrefabs.Length)];
+        var prefab = StonesPrefabs[Random.Range(0, StonesPrefabs.Length)];
         return Instantiate(prefab, spawnPoint, Quaternion.Euler(new Vector3(Random.Range(0f, 360f), Random.Range(0f, 360f), Random.Range(0f, 360f))));
     }
 }
