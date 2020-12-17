@@ -6,7 +6,7 @@ public class ObjectSpawner : MonoBehaviour
 {
     // public List<Transform> spawnPoints;
     public static GameObject[] StonesPrefabs;
-    public int spawnCount = 100;
+    public int spawnCount = 1;
     public Vector3 center;
     public Vector3 size;
 
@@ -26,24 +26,17 @@ public class ObjectSpawner : MonoBehaviour
 
     void spawnStones()
     {
-        for (int i = 0; i < spawnCount; i++)
+        for (int i = 0; i < 100; i++)
         {
             Vector3 pos = center + new Vector3(Random.Range(-size.x / 2, size.x / 2), Random.Range(-size.y / 2, size.y / 2), Random.Range(-size.z / 2, size.z / 2));
             GameObject stone = spawnStone(pos);
+            Rigidbody stone_rigidbody = stone.AddComponent<Rigidbody>();
             stone.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
             BoxCollider stone_colider = stone.AddComponent<BoxCollider>();
-            Rigidbody stone_rigidbody = stone.AddComponent<Rigidbody>();
-            stone_rigidbody.mass = 5;
+            stone_rigidbody.mass = 2f;
+            stone.name = "stone_" + i;
         }
     }
-
-    private void OnDrawGizmosSelected()
-    {
-        Gizmos.color = new Color(255, 255, 255, 0.5f);
-        Gizmos.DrawCube(center, size);
-    }
-
-
 
     private GameObject spawnStone(Vector3 spawnPoint)
     {
